@@ -1,9 +1,9 @@
 {
-  "Author": "SF-XIV",
-  "Name": "Roleplayer's Toolbox",
-  "Punchline": "RP'ers toolbox - Final Pull Edition",
-  "Description": "RP'ers toolbox - [Final Pull Edition]\n If you know, you know ~",
+  "Author": "AST",
+  "Name": "RP-TBX",
+  "Punchline": "RP'ers toolbox - Kitsune Release",
+  "Description": "RP'ers toolbox - Kitsune Release\n Just a gal tryna fix a plugin.",
   "ApplicableVersion": "any",
-  "RepoUrl": "https://github.com/SF-XIV/RolePlayersToolbox-FP-Edition",
-  "IconUrl": "https://raw.githubusercontent.com/SF-XIV/RolePlayersToolbox-FP-Edition/main/icon.png"
+  "RepoUrl": "https://github.com/ML-Astra/RP-TBX",
+  "IconUrl": "https://raw.githubusercontent.com/ML-Astra/RP-TBX/main/icon.png"
 }

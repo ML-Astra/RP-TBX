@@ -49,7 +49,7 @@ namespace RoleplayersToolbox {
 
             ImGui.SetNextWindowSize(new Vector2(450, 300), ImGuiCond.FirstUseEver);
 
-            if (!ImGui.Begin("The Roleplayer's Toolbox", ref this._showInterface)) {
+            if (!ImGui.Begin("RP-TBX Kitsune Edition", ref this._showInterface)) {
                 ImGui.End();
                 return;
             }

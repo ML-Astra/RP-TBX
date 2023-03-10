@@ -10,7 +10,9 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
-using XivCommon.Functions.ContextMenu;
+// XIVCommon Deprecated the context menu system
+//using XivCommon.Functions.ContextMenu;
+using Dalamud.ContextMenu;
 
 namespace RoleplayersToolbox.Tools.Housing {
     internal class HousingTool : BaseTool, IDisposable {
@@ -58,7 +60,8 @@ namespace RoleplayersToolbox.Tools.Housing {
                 this._addonMapHide = Marshal.GetDelegateForFunctionPointer<AddonMapHideDelegate>(addonMapHidePtr);
             }
 
-            this.Plugin.Common.Functions.ContextMenu.OpenContextMenu += this.OnContextMenu;
+            //this.Plugin.Common.Functions.ContextMenu.OpenContextMenu += this.OnContextMenu;
+            this.Plugin.Menu.OnOpenGameObjectContextMenu += this.OnContextMenu;
             this.Plugin.Framework.Update += this.OnFramework;
             this.Plugin.CommandManager.AddHandler("/route", new CommandInfo(this.OnRouteCommand) {
                 HelpMessage = "Extract housing information from the given text and open the routing window",
@@ -72,7 +75,7 @@ namespace RoleplayersToolbox.Tools.Housing {
             this.Plugin.CommandManager.RemoveHandler("/bookmarks");
             this.Plugin.CommandManager.RemoveHandler("/route");
             this.Plugin.Framework.Update -= this.OnFramework;
-            this.Plugin.Common.Functions.ContextMenu.OpenContextMenu -= this.OnContextMenu;
+            this.Plugin.Menu.OnOpenGameObjectContextMenu -= this.OnContextMenu;
         }
 
         public override void DrawSettings(ref bool anyChanged) {
@@ -198,18 +201,16 @@ namespace RoleplayersToolbox.Tools.Housing {
             this.BookmarksUi.ShouldDraw ^= true;
         }
 
-        private void OnContextMenu(ContextMenuOpenArgs args) {
+        private void OnContextMenu(GameObjectContextMenuOpenArgs args) {
             if (args.ParentAddonName != "LookingForGroup" || args.ContentIdLower == 0) {
                 return;
             }
-
-            args.Items.Add(new NormalContextSubMenuItem("Roleplayer's Toolbox", args => {
-                args.Items.Add(new NormalContextMenuItem("Select as Destination", this.SelectDestination));
-                args.Items.Add(new NormalContextMenuItem("Add Bookmark", this.AddBookmark));
-            }));
+                args.AddCustomItem(new GameObjectContextMenuItem("Select as Destination", this.SelectDestination, true));
+                args.AddCustomItem(new GameObjectContextMenuItem("Add Bookmark", this.AddBookmark, true));
+            ;
         }
 
-        private void SelectDestination(ContextMenuItemSelectedArgs args) {
+        private void SelectDestination(GameObjectContextMenuItemSelectedArgs args) {
             var listing = this.Plugin.Common.Functions.PartyFinder.CurrentListings.Values.FirstOrDefault(listing => listing.ContentIdLower == args.ContentIdLower);
             if (listing == null) {
                 return;
@@ -219,7 +220,7 @@ namespace RoleplayersToolbox.Tools.Housing {
             this.Destination = InfoExtractor.Extract(listing.Description.TextValue, listing.World.Value.DataCenter.Row, this.Plugin.DataManager, this.Info);
         }
 
-        private void AddBookmark(ContextMenuItemSelectedArgs args) {
+        private void AddBookmark(GameObjectContextMenuItemSelectedArgs args) {
             var listing = this.Plugin.Common.Functions.PartyFinder.CurrentListings.Values.FirstOrDefault(listing => listing.ContentIdLower == args.ContentIdLower);
             if (listing == null) {
                 return;

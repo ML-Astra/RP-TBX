@@ -8,6 +8,7 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.ContextMenu;
 using RoleplayersToolbox.Tools;
 using RoleplayersToolbox.Tools.Housing;
 using RoleplayersToolbox.Tools.Targeting;
@@ -21,9 +22,9 @@ using RoleplayersToolbox.Tools.Illegal.EmoteSnap;
 namespace RoleplayersToolbox {
     internal class Plugin : IDalamudPlugin {
         #if DEBUG
-        public string Name => "The Roleplayer's Toolbox (Debug)";
+        public string Name => "RP-TBX (Debug)";
         #else
-        public string Name => "The Roleplayer's Toolbox";
+        public string Name => "RP-TBX";
         #endif
 
         [PluginService]
@@ -57,11 +58,13 @@ namespace RoleplayersToolbox {
         internal XivCommonBase Common { get; }
         internal List<ITool> Tools { get; } = new();
         internal PluginUi Ui { get; }
+        internal DalamudContextMenu Menu { get; set; }
         private Commands Commands { get; }
 
         public Plugin() {
             this.Config = this.Interface.GetPluginConfig() as Configuration ?? new Configuration();
-            this.Common = new XivCommonBase(Hooks.ContextMenu | Hooks.PartyFinderListings);
+            this.Common = new XivCommonBase(Hooks.PartyFinderListings);
+            this.Menu = new DalamudContextMenu();
 
             this.Tools.Add(new HousingTool(this));
             this.Tools.Add(new TargetingTool(this));

@@ -8,13 +8,13 @@ namespace RoleplayersToolbox {
         internal Commands(Plugin plugin) {
             this.Plugin = plugin;
 
-            this.Plugin.CommandManager.AddHandler("/rptools", new CommandInfo(this.OnCommand) {
-                HelpMessage = "Open The Roleplayer's Toolbox",
+            this.Plugin.CommandManager.AddHandler("/rptbx", new CommandInfo(this.OnCommand) {
+                HelpMessage = "Open RP-TBX",
             });
         }
 
         public void Dispose() {
-            this.Plugin.CommandManager.RemoveHandler("/rptools");
+            this.Plugin.CommandManager.RemoveHandler("/rptbx");
         }
 
         private void OnCommand(string command, string arguments) {
